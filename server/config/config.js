@@ -20,6 +20,8 @@ if(process.env.NODE_ENV === 'dev') {
 // 30 dias
 process.env.CADUCIDAD_TOKEN = 60 * 60 * 24 * 30 ;
 
+process.env.GOOGLE_CLIENT_ID = '944893093627-q3lhlq3ujpg8qm9fpgbnn0vekbcq01lj.apps.googleusercontent.com';
+
 
 //============//
 // SEED
