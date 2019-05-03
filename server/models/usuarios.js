@@ -17,7 +17,7 @@ let usuarioSchema = new Schema({
     email: {
         type: String,
         required: [true,'El correo es necesario'],
-        unique: [true, 'No puede ser duplicado'],
+        unique: [true, 'DUPLICATED'],
     },
     password: {
         type: String,
@@ -46,6 +46,6 @@ let usuarioSchema = new Schema({
 
 });
 
-usuarioSchema.plugin(uniqueValidator, {message: '{PATH} debe de ser unico'});
+// usuarioSchema.plugin(uniqueValidator, {message: 'DUPLICATED'});
 
 module.exports = mongoose.model('Usuario',usuarioSchema);

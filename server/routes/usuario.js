@@ -20,14 +20,14 @@ app.get("/usuario", verificaToken, (req, res) => {
     .limit(limit)
     .exec((err, usuarios) => {
       if (err) {
-        res.status(500).json({
+        return res.status(500).json({
           ok: false,
           err: "error intero"
         });
       } else {
         Usuario.countDocuments({}, (err, count) => {
           if (err) {
-            res.status(500).json({
+            return res.status(500).json({
               ok: false,
               err: "error intero"
             });
@@ -67,6 +67,31 @@ app.post("/usuario", [verificaToken, verificaAdminRole], (req, res) => {
     }
   });
 });
+
+app.post("/usuario/public", (req, res) => {
+    let body = _.pick(req.body, ["nombre", "email", "password"]);
+  
+    let usuario = new Usuario({
+      nombre: body.nombre,
+      email: body.email,
+      password: bcrypt.hashSync(body.password, 10),
+    });
+  
+    usuario.save((err, usuarioDB) => {
+      console.log(err);
+      if (err) {
+        return res.status(460).json({
+          ok: false,
+          error: err.code
+        });
+      } else {
+        return res.json({
+          ok: true,
+          usuario: usuarioDB
+        });
+      }
+    });
+  });
 
 app.put("/usuario/:id", verificaToken, (req, res) => {
   let body = _.pick(req.body, ["nombre", "img", "role", "estado"]);

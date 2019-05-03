@@ -4,11 +4,31 @@ let verificaToken = (req, res, next) => {
   let token = req.get("Authorization");
 
   jwt.verify(token, process.env.SEED, (err, decoded) => {
-
     if (err) {
       res.status(401).json({
         ok: false,
         err: "No autorizado"
+      });
+    } else {
+      req.usuario = decoded.usuario;
+      next();
+    }
+  });
+};
+
+let verificaTokenChangePassword = (req, res, next) => {
+  let token = req.get("Authorization");
+
+  jwt.verify(token, process.env.SEED, (err, decoded) => {
+    if (err) {
+      res.status(401).json({
+        ok: false,
+        err: "No autorizado"
+      });
+    } else if (!decoded.isPasswordReset) {
+      res.status(401).json({
+        ok: false,
+        err: "Token no valido, No autorizado"
       });
     } else {
       req.usuario = decoded.usuario;
@@ -30,4 +50,4 @@ let verificaAdminRole = (req, res, next) => {
   }
 };
 
-module.exports = { verificaToken, verificaAdminRole };
+module.exports = { verificaToken, verificaAdminRole, verificaTokenChangePassword };
